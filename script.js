@@ -47,75 +47,89 @@ contacts = [
 
 window.onload = function () {
   function render() {
-    document.getElementById("contact-list").innerHTML = "";
+    document.getElementById("js-contactList").innerHTML = "";
+    for (let i = 0; i < contacts.length; i++) {
+      const el = document.createElement("div");
+      el.innerHTML = "<p class='contactList_itemName'>" + contacts[i].name + "</p>";
 
-    for (var i = 0; i < contacts.length; i++) {
-      var el = document.createElement("div");
-      el.innerHTML = contacts[i].name;
-      el.className = 'contactName';
+      if (contacts[i] == contacts[0]) {
+        el.className = 'contactList_item contactList_item_first';
+      } else if (contacts[i] == contacts[contacts.length - 1]){
+        el.className = 'contactList_item contactList_item_last';
+      } else {
+        el.className = 'contactList_item';
+      }
+
       el.id = i;
       el.onclick = e => {
-        var contactId = parseInt(e.currentTarget.id);
-        var contactDetails = document.getElementById('contactDetails');
-        var favouriteClass = contacts[parseInt(e.currentTarget.id)].favourite ? "favourite" : "";
-        contactDetails.innerHTML =
-          "<span id='close-details'>x</span>" +
-          "<span id='favourite' class='" + favouriteClass + "'>*</span>" +
-          "<div>" + contacts[parseInt(e.currentTarget.id)].name + "</div>" +
-          "<div>" + contacts[parseInt(e.currentTarget.id)].email + "</div>";
-        contactDetails.setAttribute("class", "");
+        const contactId = parseInt(e.currentTarget.id);
+        const details = document.getElementById('js-details');
+        let favouriteContact = contacts[parseInt(e.currentTarget.id)].favourite ? "details_favourite_checked" : "details_favourite_unchecked";
 
-        document.getElementById('favourite').onclick = function (e) {
+        details.innerHTML =
+          "<div class='details_topRow'>" +
+            "<div class='details_nameAndFavorite'>" +
+              "<p class='details_name'>" + contacts[parseInt(e.currentTarget.id)].name + "</p>" +
+              "<span id='js-details_favourite' class='icon " + favouriteContact + "'></span>" +
+            "</div>" +
+            "<span id='js-details_close' class='details_close icon'></span>" +
+          "</div>" +
+          "<p class='details_email'>" + contacts[parseInt(e.currentTarget.id)].email + "</p>";
+        details.style.display = "block";
+
+        document.getElementById('js-details_favourite').onclick = function (e) {
           contacts[contactId].favourite = !contacts[contactId].favourite;
-
-          if (e.currentTarget.getAttribute("class") == "favourite") {
-            e.currentTarget.setAttribute("class", "");
+          if (e.currentTarget.getAttribute("class") == "icon details_favourite_checked") {
+            e.currentTarget.setAttribute("class", "icon details_favourite_unchecked");
           } else {
-            e.currentTarget.setAttribute("class", "favourite");
+            e.currentTarget.setAttribute("class", "icon details_favourite_checked");
           }
         }
-
-        document.getElementById('close-details').onclick = function () {
-          contactDetails.innerHTML = "";
-          contactDetails.setAttribute("class", "hidden");
+        document.getElementById('js-details_close').onclick = function () {
+          details.innerHTML = "";
+          details.style.display = "none";
         }
 
+        window.onclick = function(event) {
+          if (event.target == details) {
+            details.style.display = "none";
+          }
+        }
       };
-
-      document.getElementById("contact-list").appendChild(el);
+      document.getElementById("js-contactList").appendChild(el);
     }
 
-    document.getElementById('contactFilter').onclick = function (e) {
-      var contactNames = document.querySelectorAll('.contactName');
+    document.getElementById('js-filter_link').onclick = function (e) {
+      const contactNames = document.querySelectorAll('.contactList_item');
 
       if (e.currentTarget.innerText === "Visa alla") {
         e.currentTarget.innerText = "Filtrera favoriter"
         contactNames.forEach(function (node, i) {
-          node.setAttribute("class", "contactName");
+          node.setAttribute("class", "contactList_item");
         })
       } else {
         e.currentTarget.innerText = "Visa alla";
         contactNames.forEach(function (node, i) {
           if (contacts[i].favourite) {
-            node.setAttribute("class", "contactName");
+            node.setAttribute("class", "contactList_item");
           } else {
-            node.setAttribute("class", "hidden contactName");
+            node.setAttribute("class", "hidden contactList_item");
           }
         })
       }
+      contactNames.style.display = "block";
     };
 
-    document.getElementById('search-button').onclick = function () {
-      var contactNames = document.querySelectorAll('.contactName');
+    document.getElementById('js-searchBar_button').onclick = function () {
+      const contactNames = document.querySelectorAll('.contactList_item');
       contactNames.forEach(function (node) {
-        var regexp = new RegExp(document.getElementById('search').value.toLowerCase());
+        const regexp = new RegExp(document.getElementById('js-searchBar_field').value.toLowerCase());
         if (regexp.test(node.innerText.toLowerCase())) {
-          node.setAttribute("class", "contactName");
+          node.setAttribute("class", "contactList_item");
         } else {
-          node.setAttribute("class", "hidden contactName");
+          node.setAttribute("class", "hidden contactList_item");
         }
       })
-
     }
   }
 

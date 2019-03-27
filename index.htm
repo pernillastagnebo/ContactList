@@ -1,52 +1,22 @@
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <style type="text/css">
-        .favourite {
-            background-color: gold;
-        }
-
-        #rubrik {
-            color: hotpink;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        #contactDetails {
-          margin: 20px;
-          padding: 10px;
-          border: 1px solid hotpink;
-        }
-
-        #contact-list {
-          margin: 20px;
-          padding: 10px;
-          border: 1px solid hotpink;
-        }
-
-        #close-details {
-          display: block;
-          float: right;
-        }
-
-        #favourite {
-          display: block;
-          float: right;
-        }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" type="text/javascript"></script>
 </head>
-
 <body>
-    <div id="rubrik"><b>Contacts</b></div>
-    <div id="contactSearch"><input type="text" id="search" /><button id="search-button">Sök</button></div>
-    <div><a href="#" id="contactFilter">Filtrera favoriter</a></div>
-    <div id="contact-list"></div>
-    <div id="contactDetails" class="hidden"></div>
+  <main class="contactListWrapper">
+    <h1 class="headline">Contacts</h1>
+    <section class="search">
+      <input id="js-searchBar_field" class="searchBar searchBar_field" type="text" name="search" placeholder="Sök" />
+      <button id="js-searchBar_button" class="searchBar searchBar_button"><span class="searchBar_button_icon icon"></span></button>
+    </section>
+    <section class="filter">
+      <a id="js-filter_link" class="filter_link" href="#">Filtrera favoriter</a>
+    </section>
+    <section id="js-contactList" class="contactList"></section>
+    <section id="js-details" class="details">
+    </section>
+  </main>
 </body>
-
 </html>
